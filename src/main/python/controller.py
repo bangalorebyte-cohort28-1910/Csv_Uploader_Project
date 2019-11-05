@@ -1,6 +1,4 @@
-import src.main.python.model
-import src.main.python.view
-import src.main.python.settings
+from src.main.python import model, view, settings
 
 def validateCSV():
     pass
