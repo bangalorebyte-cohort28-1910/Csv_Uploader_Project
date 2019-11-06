@@ -1,5 +1,3 @@
-import model, view, settings
-
 import logging
 
 def learnLogging():
@@ -7,16 +5,21 @@ def learnLogging():
     username = "ABC User"
     errmsg = "INVALID PASSWORD"
 
-    logging.basicConfig(level=logging.DEBUG, filename='xlsUploaderLog.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
-    logging.basicConfig(level=logging.DEBUG, filename='xlsUploaderLog.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
-    logging.basicConfig(filename='xlsUploaderLog.log', filemode='w', format='%(asctime)s - %(process)d - %(name)s - %(levelname)s - %(message)s')
-    logging.basicConfig(format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S')
+    # logging.basicConfig(filename='xlsUploaderLog.log', filemode='w')
+    # logging.basicConfig(level=logging.DEBUG, filename='xlsUploaderLog.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+    # logging.basicConfig(filename='xlsUploaderLog.log', filemode='a', format='%(asctime)s - %(process)d - %(name)s - %(levelname)s - %(message)s')
+    logging.basicConfig(filename='xlsUploaderLog.log', filemode='w', format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S')
 
     logging.info('Admin logged in')
     logging.basicConfig(level=logging.DEBUG)
     logging.info('ABC User trying to log in')
     logging.warning('This will get logged to a file')
     logging.warning(f'{username} Could not login because of {errmsg}')
+    logging.debug('This is a debug message')
+    logging.info('This is an info message')
+    logging.warning('This is a warning message')
+    logging.error('This is an error message')
+    logging.critical('This is a critical message')
 
 def exceptionLogging():
     a = 5
@@ -25,7 +28,7 @@ def exceptionLogging():
         c = a / b
     except Exception as e:
         logging.exception("Exception occurred")
-        logging.exception("Exception occurred", exc_info=True)
+        logging.error("Exception occurred", exc_info=True)
 
 def loggingUsingHandlers():
     # Create a custom logger
@@ -54,4 +57,4 @@ def loggingUsingHandlers():
 if __name__ == '__main__':
     learnLogging()
     exceptionLogging()
-    loggingUsingHandlers()
+    # loggingUsingHandlers()
