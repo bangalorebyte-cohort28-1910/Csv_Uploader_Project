@@ -1,2 +1,8 @@
 ~$CSV_Uploader_Project_Plan.xlsx
-__pycache__/
+Documentation/
+csvUploaderLog.log
+test/main/python/__pycache__/
+src/main/python/__pycache__/model.cpython-37.pyc
+src/main/python/__pycache__/settings.cpython-37.pyc
+src/main/python/__pycache__/view.cpython-37.pyc
+src/main/python/__pycache__/
