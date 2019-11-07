@@ -1,6 +1,9 @@
-# from src.main.python import model, view, settings
-import logging
+import sys, os
+sys.path.insert(1, os.path.dirname(__file__))
 import model, view, settings
+import logging
+import pandas as pd
+
 
 logger = logging.getLogger('controller')
 
@@ -27,7 +30,7 @@ def validate_login(username:str, password:str):
     
     logger.debug(f'response :: {response}')
     logger.debug('Exiting method validate_login()')
-    pass
+    return response
 
 
 def validate_csv():
@@ -45,8 +48,13 @@ def validate_csv():
     # CSV_DF_OBJ = <dataframe object>
     # global CSV_DF_OBJ
 
+    # df = pd.read_csv("PyQtTest.csv")
+    # df = df.drop(['Unnamed: 0'], axis=1)
+    # column_list = list(df.columns.values)
+    # logger.debug('column_list :: ' + str(column_list))
+        
     logger.debug('Exiting method validate_csv()')
-    pass
+    return ""
 
 def send_csv():
     """
@@ -68,8 +76,12 @@ def addnums(a, b):
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG, filename='csvUploaderLog.log', filemode='a', format='%(asctime)s - %(process)d - %(name)s - %(levelname)s - %(message)s')
+    # validate_login('username123', 'password123')
     # validate_login('user123', 'password1234')
+    # validate_login('user123', 'password123')
     view.openLoginWindow()
+    # validate_csv()
     # view.openCsvUploaderWindow()
+    # print(str(os.path.abspath(os.path.join(os.path.dirname(__file__)))))
     logging.debug('Exiting Application from __main__')
     logging.shutdown()
