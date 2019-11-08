@@ -80,22 +80,15 @@ def send_csv():
     return dbresponse
 
 
-def addnums(a, b):
-    return a+b
-
 if __name__ == '__main__':
     logging.basicConfig(level=logging.DEBUG, filename='csvUploaderLog.log', filemode='a', format='%(asctime)s - %(process)d - %(name)s - %(levelname)s - %(message)s')
-    # validate_login('username123', 'password123')
-    # validate_login('user123', 'password1234')
-    # validate_login('user123', 'password123')
+    
     # view.openLoginWindow()
-    # validate_csv()
     validate_csv_response = validate_csv('Sample_valid.csv')
     if(validate_csv_response == 'VALID_CSV'):
         send_csv()
     else:
         logger.error('INVALID_CSV :: csv file sent was invalid')
-    # view.openCsvUploaderWindow()
-    # print(str(os.path.abspath(os.path.join(os.path.dirname(__file__)))))
+
     logging.debug('Exiting Application from __main__')
     logging.shutdown()
