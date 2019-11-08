@@ -42,14 +42,26 @@ def validate_csv(file_name):
     @return String ['VALID_CSV' | 'INVAID_CSV']
     """
     logger.debug('Executing method validate_csv()')
-    
-    df = pd.read_excel(file_name)
-    df = df.drop(['Unnamed: 0'], axis=1)
-    column_list = list(df.columns.values)
-    if column_list == settings.COLUMNS_LIST:
-        response = "VALID_CSV"
-    else:
-        response = "INVALID_CSV"
+
+    if (file_name.split(".")[1] == "csv"):
+        df = pd.read_csv(file_name)
+        df = df.drop(['Unnamed: 0'], axis=1)
+        column_list = list(df.columns.values)
+        if column_list == settings.COLUMNS_LIST:
+            response = "VALID_CSV"
+        else:
+            response = "INVALID_CSV"
+    else: 
+        (file_name.split(".")[1] == "xlsx")
+        df = pd.read_excel(file_name)
+        df = df.drop(['Unnamed: 0'], axis=1)
+        #df = df.drop(['Unnamed: 0'], axis=1)
+        column_list = list(df.columns.values)
+        if column_list == settings.COLUMNS_LIST:
+            response = "VALID_CSV"
+        else:
+            response = "INVALID_CSV"
+
 
     logger.debug(f'column list :: {str(column_list)}')
     logger.debug('Exiting method validate_csv()')
@@ -90,7 +102,7 @@ if __name__ == '__main__':
     # validate_login('user123', 'password123')
     # view.openLoginWindow()
     # validate_csv()
-    validate_csv()
+    validate_csv("Sample_valid.xlsx")
     # view.openCsvUploaderWindow()
     # print(str(os.path.abspath(os.path.join(os.path.dirname(__file__)))))
     logging.debug('Exiting Application from __main__')
