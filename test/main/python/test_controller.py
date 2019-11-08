@@ -17,8 +17,9 @@ class TestController(unittest.TestCase):
  
     def test_validateCSV(self):
         #self.assertEqual( controller.validate_csv(), True)
-        self.assertEqual( controller.validate_csv(), "VALID_CSV")
-        #self.assertEqual(controller.validate_csv(), "INVALID_CSV")
+        self.assertEqual( controller.validate_csv("Sample_data3.xlsx"), "INVALID_CSV")
+        self.assertEqual(controller.validate_csv("Sample_data2.xlsx"), "INVALID_CSV")
+        self.assertEqual(controller.validate_csv("Sample_data.xlsx"), "VALID_CSV")
 
         pass
      
