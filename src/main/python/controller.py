@@ -48,6 +48,8 @@ def validate_csv(file_name):
     column_list = list(df.columns.values)
     if column_list == settings.COLUMNS_LIST:
         response = "VALID_CSV"
+        global CSV_DF_OBJ
+        CSV_DF_OBJ = df
     else:
         response = "INVALID_CSV"
 
@@ -55,15 +57,6 @@ def validate_csv(file_name):
     logger.debug('Exiting method validate_csv()')
     return response
 
-    # TODO 
-    # if <csv format is correct>
-    # CSV_DF_OBJ = <dataframe object>
-    # global CSV_DF_OBJ
-
-    # df = pd.read_csv("PyQtTest.csv")
-    # df = df.drop(['Unnamed: 0'], axis=1)
-    # column_list = list(df.columns.values)
-    # logger.debug('column_list :: ' + str(column_list))
 
 def send_csv():
     """
@@ -73,11 +66,11 @@ def send_csv():
     """
     logger.debug('Executing method send_csv()')
 
-    # model.push_csv_records_to_db(CSV_DF_OBJ)
+    dbresponse = model.push_csv_records_to_db(CSV_DF_OBJ)
 
     logger.debug('Exiting method send_csv()')
 
-    pass
+    return dbresponse
 
 
 def addnums(a, b):
@@ -90,7 +83,11 @@ if __name__ == '__main__':
     # validate_login('user123', 'password123')
     # view.openLoginWindow()
     # validate_csv()
-    validate_csv()
+    validate_csv_response = validate_csv('Sample_data.xlsx')
+    if(validate_csv_response == 'VALID_CSV'):
+        send_csv()
+    else:
+        logger.error('INVALID_CSV :: csv file sent was invalid')
     # view.openCsvUploaderWindow()
     # print(str(os.path.abspath(os.path.join(os.path.dirname(__file__)))))
     logging.debug('Exiting Application from __main__')
