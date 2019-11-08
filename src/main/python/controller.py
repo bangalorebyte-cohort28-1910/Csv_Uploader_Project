@@ -33,7 +33,7 @@ def validate_login(username:str, password:str):
     return response
 
 
-def validate_csv():
+def validate_csv(file_name):
     """
     This function uploads csv file & reads, through a dataframe object. 
     It captures the column names from file and compares with the static column list
@@ -43,12 +43,11 @@ def validate_csv():
     """
     logger.debug('Executing method validate_csv()')
     
-    df = pd.read_excel("/Users/tamding/Desktop/Sample_data.xlsx")
+    df = pd.read_excel(file_name)
     df = df.drop(['Unnamed: 0'], axis=1)
     column_list = list(df.columns.values)
     if column_list == settings.COLUMNS_LIST:
         response = "VALID_CSV"
-        
     else:
         response = "INVALID_CSV"
 
