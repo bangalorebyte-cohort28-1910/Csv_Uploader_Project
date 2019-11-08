@@ -45,22 +45,19 @@ def validate_csv(file_name):
 
     if (file_name.split(".")[1] == "csv"):
         df = pd.read_csv(file_name)
-        df = df.drop(['Unnamed: 0'], axis=1)
-        column_list = list(df.columns.values)
-        if column_list == settings.COLUMNS_LIST:
-            response = "VALID_CSV"
-        else:
-            response = "INVALID_CSV"
     else: 
         (file_name.split(".")[1] == "xlsx")
         df = pd.read_excel(file_name)
-        df = df.drop(['Unnamed: 0'], axis=1)
-        #df = df.drop(['Unnamed: 0'], axis=1)
-        column_list = list(df.columns.values)
-        if column_list == settings.COLUMNS_LIST:
-            response = "VALID_CSV"
-        else:
-            response = "INVALID_CSV"
+
+    df = df.drop(['Unnamed: 0'], axis=1)
+    column_list = list(df.columns.values)
+    if column_list == settings.COLUMNS_LIST:
+        response = "VALID_CSV"
+
+        global CSV_DF_OBJ
+        CSV_DF_OBJ = df
+    else:
+        response = "INVALID_CSV"
 
 
     logger.debug(f'column list :: {str(column_list)}')
@@ -93,7 +90,7 @@ if __name__ == '__main__':
     # validate_login('user123', 'password123')
     # view.openLoginWindow()
     # validate_csv()
-    validate_csv_response = validate_csv('Sample_data.xlsx')
+    validate_csv_response = validate_csv('Sample_valid.csv')
     if(validate_csv_response == 'VALID_CSV'):
         send_csv()
     else:
