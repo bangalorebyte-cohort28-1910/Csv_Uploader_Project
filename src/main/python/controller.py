@@ -42,6 +42,19 @@ def validate_csv():
     @return String ['VALID_CSV' | 'INVAID_CSV']
     """
     logger.debug('Executing method validate_csv()')
+    
+    df = pd.read_excel("/Users/tamding/Desktop/Sample_data.xlsx")
+    df = df.drop(['Unnamed: 0'], axis=1)
+    column_list = list(df.columns.values)
+    if column_list == settings.COLUMNS_LIST:
+        response = "VALID_CSV"
+        
+    else:
+        response = "INVALID_CSV"
+
+    logger.debug(f'column list :: {str(column_list)}')
+    logger.debug('Exiting method validate_csv()')
+    return response
 
     # TODO 
     # if <csv format is correct>
@@ -52,9 +65,6 @@ def validate_csv():
     # df = df.drop(['Unnamed: 0'], axis=1)
     # column_list = list(df.columns.values)
     # logger.debug('column_list :: ' + str(column_list))
-        
-    logger.debug('Exiting method validate_csv()')
-    return ""
 
 def send_csv():
     """
@@ -79,8 +89,9 @@ if __name__ == '__main__':
     # validate_login('username123', 'password123')
     # validate_login('user123', 'password1234')
     # validate_login('user123', 'password123')
-    view.openLoginWindow()
+    # view.openLoginWindow()
     # validate_csv()
+    validate_csv()
     # view.openCsvUploaderWindow()
     # print(str(os.path.abspath(os.path.join(os.path.dirname(__file__)))))
     logging.debug('Exiting Application from __main__')
