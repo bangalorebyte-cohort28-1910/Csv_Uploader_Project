@@ -64,40 +64,45 @@ def push_csv_records_to_db(df):
     """
 
     logger.debug('Executing method push_csv_records_to_db()')
-
-    fetch_db_engine()
-    inspector = inspect(DB_ENGINE)
-    table_names = str(inspector.get_table_names())
-
-    # Get table information
-    logger.debug('DB Table Names' + table_names)
-
-    # ------ This code should be deleted as it is expected that 
-    # ------ the client would already have this table existing
-    # ------ and the code is expected to show an error if the table does'nt exist.
-    # --------------- CODE STARTING FROM HERE -------------------------
-    if settings.DB_TABLE_NAME not in table_names:
-        logger.debug(settings.DB_TABLE_NAME + ' does not table exist')
-        logger.debug("Calling create_table_job_postings()")
-        create_table_job_postings()
-
-        logger.debug("Checking again if table exists...")
+    
+    try:
         fetch_db_engine()
         inspector = inspect(DB_ENGINE)
         table_names = str(inspector.get_table_names())
-        logger.debug('DB Table Names Again :: ' + table_names)
-    # ---------------CODE TILL HERE -- NEEDS TO BE DELETED ------------
-        
-    if settings.DB_TABLE_NAME in table_names:
-        logger.debug(settings.DB_TABLE_NAME + ' table exists')
-        try:
-            df.to_sql('job_postings', DB_ENGINE, if_exists='append' )
-            db_response = 'DB_UPDATE_SUCCESSFUL'
-        except:
-            logger.exception("Exception occured while trying to append data to the table :: " + settings.DB_TABLE_NAME)
+
+        # Get table information
+        logger.debug('DB Table Names' + table_names)
+
+        # ------ This code should be deleted as it is expected that 
+        # ------ the client would already have this table existing
+        # ------ and the code is expected to show an error if the table does'nt exist.
+        # --------------- CODE STARTING FROM HERE -------------------------
+        if settings.DB_TABLE_NAME not in table_names:
+            logger.debug(settings.DB_TABLE_NAME + ' does not table exist')
+            logger.debug("Calling create_table_job_postings()")
+            create_table_job_postings()
+
+            logger.debug("Checking again if table exists...")
+            fetch_db_engine()
+            inspector = inspect(DB_ENGINE)
+            table_names = str(inspector.get_table_names())
+            logger.debug('DB Table Names Again :: ' + table_names)
+        # ---------------CODE TILL HERE -- NEEDS TO BE DELETED ------------
+            
+        if settings.DB_TABLE_NAME in table_names:
+            logger.debug(settings.DB_TABLE_NAME + ' table exists')
+            logger.debug("Dataframe column_list :: " + str(df.columns.values))
+            try:
+                df.to_sql('job_postings', DB_ENGINE, if_exists='append' )
+                db_response = 'DB_UPDATE_SUCCESSFUL'
+            except:
+                logger.exception("Exception occured while trying to append data to the table :: " + settings.DB_TABLE_NAME)
+                db_response = 'DB_UPDATE_FAILED'
+        else:
+            logger.error(settings.DB_TABLE_NAME + " table does not exist in the database.")
             db_response = 'DB_UPDATE_FAILED'
-    else:
-        logger.error(settings.DB_TABLE_NAME + " table does not exist in the database.")
+    except:
+        logger.exception("Exception occured in push_csv_records_to_db() :: " + settings.DB_TABLE_NAME)
         db_response = 'DB_UPDATE_FAILED'
 
     logger.debug('Exiting method push_csv_records_to_db()')
