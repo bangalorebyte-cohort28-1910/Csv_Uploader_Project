@@ -86,11 +86,24 @@ class Controller:
         """
         logger.debug('Executing method validate_csv()')
 
-        if (file_name.split(".")[1] == "csv"):
-            df = pd.read_csv(file_name)
-        else: 
-            (file_name.split(".")[1] == "xlsx")
-            df = pd.read_excel(file_name)
+        try:
+            if(file_name == None or file_name.strip() == ''):
+                logging.debug("Empty File name")
+                response = "INVALID_CSV"
+                return response
+            elif (len(file_name.split(".")) > 0 and file_name.split(".")[-1] == "csv"):
+                df = pd.read_csv(file_name)
+            elif(len(file_name.split(".")) > 0 and file_name.split(".")[1] == "xlsx"):             
+                df = pd.read_excel(file_name)
+            else:
+                logging.debug("Invalid File :: file_name :: " + file_name)
+                response = "INVALID_CSV"
+                return response
+        except:
+            logging.exception("Invalid File :: file_name :: " + file_name)
+            response = "INVALID_CSV"
+            return response
+
 
         df = df.drop(['Unnamed: 0'], axis=1)
         column_list = list(df.columns.values)
@@ -176,18 +189,18 @@ class Controller:
 def main():
     app = QtWidgets.QApplication(sys.argv)
 
-    palette = QtGui.QPalette()
-    palette.setColor(QtGui.QPalette.Window, QtGui.QColor(3, 18, 14))
-    palette.setColor(QtGui.QPalette.Base, QtGui.QColor(15, 15, 15))
-    palette.setColor(QtGui.QPalette.AlternateBase, QtGui.QColor(53, 53, 53))
-    palette.setColor(QtGui.QPalette.ToolTipBase, QtCore.Qt.white)
-    palette.setColor(QtGui.QPalette.Text, QtCore.Qt.black)
-    palette.setColor(QtGui.QPalette.Button, QtGui.QColor(53, 53, 53))
-    palette.setColor(QtGui.QPalette.ButtonText, QtCore.Qt.black)
-    palette.setColor(QtGui.QPalette.BrightText, QtCore.Qt.red)
-    palette.setColor(QtGui.QPalette.Highlight, QtGui.QColor(142, 45, 197).lighter())
-    palette.setColor(QtGui.QPalette.HighlightedText, QtCore.Qt.black)
-    app.setPalette(palette)
+    # palette = QtGui.QPalette()
+    # palette.setColor(QtGui.QPalette.Window, QtGui.QColor(3, 18, 14))
+    # palette.setColor(QtGui.QPalette.Base, QtGui.QColor(15, 15, 15))
+    # palette.setColor(QtGui.QPalette.AlternateBase, QtGui.QColor(53, 53, 53))
+    # palette.setColor(QtGui.QPalette.ToolTipBase, QtCore.Qt.white)
+    # palette.setColor(QtGui.QPalette.Text, QtCore.Qt.black)
+    # palette.setColor(QtGui.QPalette.Button, QtGui.QColor(53, 53, 53))
+    # palette.setColor(QtGui.QPalette.ButtonText, QtCore.Qt.black)
+    # palette.setColor(QtGui.QPalette.BrightText, QtCore.Qt.red)
+    # palette.setColor(QtGui.QPalette.Highlight, QtGui.QColor(142, 45, 197).lighter())
+    # palette.setColor(QtGui.QPalette.HighlightedText, QtCore.Qt.black)
+    # app.setPalette(palette)
 
     controller = Controller()
     controller.show_login()

@@ -1,13 +1,111 @@
-import sys, logging, settings
+import sys, logging, settings, PyQt5
 from model import Model
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtGui import QPainter, QColor, QPen, QPalette
+from PyQt5.QtGui import QPainter, QColor, QPen, QPalette, QFont
 from PyQt5.QtCore import Qt
 import pandas as pd
 
     
 logger = logging.getLogger(__name__)
+
+class ViewLogin(QtWidgets.QWidget):
+
+    switch_window = QtCore.pyqtSignal()
+
+    def __init__(self):
+        QtWidgets.QWidget.__init__(self)
+        self.setWindowTitle('Csv Uploader - User Login')
+        self.setGeometry(QtCore.QRect(450, 450, 800, 200))
+        self.setFont(QFont('Tahoma',10))
+
+        # Set initial class variables
+        self.errormessage = ""
+        self.username = ""
+        self.password = ""
+
+        # Set layout for Main Login Window
+        layout = QtWidgets.QVBoxLayout()
+        self.setGeometry(QtCore.QRect(450, 450, 800, 200))
+
+        # Set layout for Login Credentials & add widgets
+        layout_login = QtWidgets.QGridLayout()
+        
+        self.label_username = QtWidgets.QLabel("UserName :")
+        self.label_password = QtWidgets.QLabel("Password :")
+
+        self.text_username = QtWidgets.QLineEdit()
+        self.text_username.setPlaceholderText("username")
+        self.text_password = QtWidgets.QLineEdit()
+        self.text_password.setPlaceholderText("password")
+
+        layout_login.addWidget((self.label_username), 0, 0)
+        layout_login.addWidget((self.text_username), 0, 1)
+        layout_login.addWidget((self.label_password), 1, 0)
+        layout_login.addWidget((self.text_password), 1, 1)
+
+        # Set layout for Login Error message display & add widgets
+        layout_errormessage = QtWidgets.QHBoxLayout()
+
+        self.label_message = QtWidgets.QLabel()
+        self.label_message.setText(self.errormessage)
+        self.label_message.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
+
+        layout_errormessage.addWidget(self.label_message)
+        
+        # Set layout for Login buttons & add widgets
+        layout_btns = QtWidgets.QHBoxLayout()
+
+        self.button_login = QtWidgets.QPushButton('Login')
+        self.button_cancel = QtWidgets.QPushButton('Cancel')
+
+        self.button_login.clicked.connect(self.login)
+        self.button_cancel.clicked.connect(self.check_cancel)
+
+        layout_btns.addWidget(self.button_login)
+        layout_btns.addWidget(self.button_cancel)
+
+        # Adding to Main Login layout
+        layout.addLayout(layout_login)
+        layout.addLayout(layout_errormessage)
+        layout.addLayout(layout_btns)
+
+        layout.setContentsMargins(80, 80, 80, 80)
+
+        self.setLayout(layout)
+
+        # Set window background color
+        p = self.palette()
+        p.setColor(self.backgroundRole(), QtGui.QColor("#D2E3EE"))
+        self.setPalette(p)
+        self.setAutoFillBackground(True)
+        
+        # Set window to show up
+        self.show()
+
+    def login(self):
+        self.username = self.text_username.text()
+        self.password = self.text_password.text()
+        self.switch_window.emit()
+
+    def check_cancel(self):
+        logger.debug("User chose to Exit")
+        close_window = QMessageBox.question(self,"Close Window?","Do you really want to exit?",QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        if close_window == QMessageBox.Yes:
+            logger.debug("User chose to Exit. Hence closing window & exiting app.")
+            self.close()
+        else:
+            logger.debug("User chose to stay on this app.")
+
+    def show_error(self, msg):
+        self.label_message.setText(msg)
+        self.text_username.focusWidget()
+        # pfg = self.palette()
+        # pfg.setColor(self.foregroundRole(), QtGui.QColor("#ff010f"))
+        # self.setPalette(pfg)
+        # self.label_message.setForegroundRole(pfg)
+        self.label_message.show()
+
 
 class ViewFileBrowseWindow(QtWidgets.QWidget):
 
@@ -17,6 +115,7 @@ class ViewFileBrowseWindow(QtWidgets.QWidget):
         QtWidgets.QWidget.__init__(self)
         self.setWindowTitle('Csv Uploader - Step 1 of 2 [Browse & Validate spreadsheet file]')
         self.setGeometry(QtCore.QRect(450, 450, 800, 200))
+        self.setFont(QFont('Tahoma',10))
 
         # Set initial class variables
         self.absolute_filename = ""
@@ -35,7 +134,7 @@ class ViewFileBrowseWindow(QtWidgets.QWidget):
         self.button_browse.clicked.connect(self.open_file_dialog)
         layout_filebrowse.addWidget((self.button_browse), 0, 2)
 
-        self.button_validate_excel = QtWidgets.QPushButton('Validate Excel file')
+        self.button_validate_excel = QtWidgets.QPushButton('Validate CSV/Excel file')
         self.button_validate_excel.clicked.connect(self.call_validate_csv)
         layout_filebrowse.addWidget((self.button_validate_excel), 2, 1)
 
@@ -57,7 +156,6 @@ class ViewFileBrowseWindow(QtWidgets.QWidget):
         p.setColor(self.backgroundRole(), QtGui.QColor("#B0D07F"))
         self.setPalette(p)
         self.setAutoFillBackground(True)
-
 
         self.show()
 
@@ -98,6 +196,7 @@ class ViewUpdateDBWindow(QtWidgets.QWidget):
         QtWidgets.QWidget.__init__(self)
         self.setWindowTitle('Csv Uploader - Step 2 of 2 [Push spreadsheet file data to Database]')
         self.setGeometry(QtCore.QRect(450, 450, 800, 200))
+        self.setFont(QFont('Tahoma',10))
 
         layout = QtWidgets.QVBoxLayout()
 
@@ -180,97 +279,5 @@ class ViewUpdateDBWindow(QtWidgets.QWidget):
         self.close()
 
 
-class ViewLogin(QtWidgets.QWidget):
 
-    switch_window = QtCore.pyqtSignal()
-
-    def __init__(self):
-        QtWidgets.QWidget.__init__(self)
-        self.setWindowTitle('Csv Uploader - User Login')
-
-        # Set initial class variables
-        self.errormessage = ""
-        self.username = ""
-        self.password = ""
-
-        # Set layout for Main Login Window
-        layout = QtWidgets.QVBoxLayout()
-        self.setGeometry(QtCore.QRect(450, 450, 800, 200))
-
-        # Set layout for Login Credentials & add widgets
-        layout_login = QtWidgets.QGridLayout()
-        
-        self.label_username = QtWidgets.QLabel("UserName :")
-        self.label_password = QtWidgets.QLabel("Password :")
-
-        self.text_username = QtWidgets.QLineEdit()
-        self.text_username.setPlaceholderText("username")
-        self.text_password = QtWidgets.QLineEdit()
-        self.text_password.setPlaceholderText("password")
-
-        layout_login.addWidget((self.label_username), 0, 0)
-        layout_login.addWidget((self.text_username), 0, 1)
-        layout_login.addWidget((self.label_password), 1, 0)
-        layout_login.addWidget((self.text_password), 1, 1)
-
-        # Set layout for Login Error message display & add widgets
-        layout_errormessage = QtWidgets.QHBoxLayout()
-
-        self.label_message = QtWidgets.QLabel()
-        self.label_message.setText(self.errormessage)
-        self.label_message.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
-
-        layout_errormessage.addWidget(self.label_message)
-        
-        # Set layout for Login buttons & add widgets
-        layout_btns = QtWidgets.QHBoxLayout()
-
-        self.button_login = QtWidgets.QPushButton('Login')
-        self.button_cancel = QtWidgets.QPushButton('Cancel')
-
-        self.button_login.clicked.connect(self.login)
-        self.button_cancel.clicked.connect(self.check_cancel)
-
-        layout_btns.addWidget(self.button_login)
-        layout_btns.addWidget(self.button_cancel)
-
-        # Adding to Main Login layout
-        layout.addLayout(layout_login)
-        layout.addLayout(layout_errormessage)
-        layout.addLayout(layout_btns)
-
-        layout.setContentsMargins(80, 80, 80, 80)
-
-        self.setLayout(layout)
-
-        # Set window background color
-        p = self.palette()
-        p.setColor(self.backgroundRole(), QtGui.QColor("#D2E3EE"))
-        self.setPalette(p)
-        self.setAutoFillBackground(True)
-        
-        # Set window to show up
-        self.show()
-
-    def login(self):
-        self.username = self.text_username.text()
-        self.password = self.text_password.text()
-        self.switch_window.emit()
-
-    def check_cancel(self):
-        logger.debug("User chose to Exit")
-        close_window = QMessageBox.question(self,"Close Window?","Do you really want to exit?",QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-        if close_window == QMessageBox.Yes:
-            logger.debug("User chose to Exit. Hence closing window & exiting app.")
-            self.close()
-        else:
-            logger.debug("User chose to stay on this app.")
-
-    def show_error(self, msg):
-        self.label_message.setText(msg)
-        # pfg = self.palette()
-        # pfg.setColor(self.foregroundRole(), QtGui.QColor("#ff010f"))
-        # self.setPalette(pfg)
-        # self.label_message.setForegroundRole(pfg)
-        self.label_message.show()
     
