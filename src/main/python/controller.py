@@ -2,7 +2,7 @@ import sys, os, settings, logging
 sys.path.insert(1, os.path.dirname(__file__))
 from model import Model
 from view import ViewLogin, ViewFileBrowseWindow, ViewUpdateDBWindow
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtGui, QtCore
 import pandas as pd
 
 
@@ -175,6 +175,20 @@ class Controller:
 
 def main():
     app = QtWidgets.QApplication(sys.argv)
+
+    palette = QtGui.QPalette()
+    palette.setColor(QtGui.QPalette.Window, QtGui.QColor(3, 18, 14))
+    palette.setColor(QtGui.QPalette.Base, QtGui.QColor(15, 15, 15))
+    palette.setColor(QtGui.QPalette.AlternateBase, QtGui.QColor(53, 53, 53))
+    palette.setColor(QtGui.QPalette.ToolTipBase, QtCore.Qt.white)
+    palette.setColor(QtGui.QPalette.Text, QtCore.Qt.black)
+    palette.setColor(QtGui.QPalette.Button, QtGui.QColor(53, 53, 53))
+    palette.setColor(QtGui.QPalette.ButtonText, QtCore.Qt.black)
+    palette.setColor(QtGui.QPalette.BrightText, QtCore.Qt.red)
+    palette.setColor(QtGui.QPalette.Highlight, QtGui.QColor(142, 45, 197).lighter())
+    palette.setColor(QtGui.QPalette.HighlightedText, QtCore.Qt.black)
+    app.setPalette(palette)
+
     controller = Controller()
     controller.show_login()
     sys.exit(app.exec_())
