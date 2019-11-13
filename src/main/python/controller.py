@@ -65,7 +65,7 @@ def validate_csv(file_name):
     return response
 
 
-def send_csv():
+def call_push_csv_to_records():
     """
     If it is a valid column list, the dataframe object is sent to model.py
     to push the records and update database.
@@ -73,11 +73,11 @@ def send_csv():
     """
     logger.debug('Executing method send_csv()')
 
-    dbresponse = model.push_csv_records_to_db(CSV_DF_OBJ)
+    db_response = model.push_csv_records_to_db(CSV_DF_OBJ)
 
     logger.debug('Exiting method send_csv()')
 
-    return dbresponse
+    return db_response
 
 
 if __name__ == '__main__':
@@ -86,7 +86,7 @@ if __name__ == '__main__':
     # view.openLoginWindow()
     validate_csv_response = validate_csv('Sample_valid.csv')
     if(validate_csv_response == 'VALID_CSV'):
-        send_csv()
+        call_push_csv_to_records()
     else:
         logger.error('INVALID_CSV :: csv file sent was invalid')
 
