@@ -48,6 +48,8 @@ class ViewFileBrowseWindow(QtWidgets.QWidget):
         layout.addLayout(layout_filebrowse)
         layout.addLayout(layout_validation_message)
 
+        layout.setContentsMargins(80, 80, 80, 80)
+
         self.setLayout(layout)
 
         # Set window background color
@@ -99,7 +101,7 @@ class ViewUpdateDBWindow(QtWidgets.QWidget):
 
         layout = QtWidgets.QVBoxLayout()
 
-        self.filelabel = QtWidgets.QLabel("Your Selected File : [ " + text + " ] data is ready to be pushed to Database. Would you like to like to push data to Database now? ")
+        self.filelabel = QtWidgets.QLabel("Your Selected File : \n\n\t[ " + text + " ] \n\n\tdata is ready to be pushed to Database. Would you like to like to push data to Database now? ")
         layout.addWidget(self.filelabel)
         
         layout_btn_row = QtWidgets.QHBoxLayout()
@@ -141,8 +143,7 @@ class ViewUpdateDBWindow(QtWidgets.QWidget):
 
         layout.addLayout(layout_update_db_message)
 
-        layout.setContentsMargins(10, 10, 10, 10)
-
+        layout.setContentsMargins(80, 80, 80, 80)
 
         self.setLayout(layout)
 
