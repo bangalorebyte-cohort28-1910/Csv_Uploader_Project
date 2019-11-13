@@ -133,11 +133,11 @@ class Controller:
         """
         logger.debug('Executing method call_push_csv_records_to_db()')
         
-        dbresponse = self.modelobj.push_csv_records_to_db(self.CSV_DF_OBJ)
+        db_response = self.modelobj.push_csv_records_to_db(self.CSV_DF_OBJ)
 
         logger.debug('Exiting method call_push_csv_records_to_db()')
 
-        return dbresponse
+        return db_response
 
     def handle_push_csv_data(self):
         logger.debug("In handle_push_csv_data()")
