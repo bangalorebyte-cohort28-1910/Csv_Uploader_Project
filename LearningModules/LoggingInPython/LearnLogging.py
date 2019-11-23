@@ -5,10 +5,10 @@ def learnLogging():
     username = "ABC User"
     errmsg = "INVALID PASSWORD"
 
-    # logging.basicConfig(filename='xlsUploaderLog.log', filemode='w')
-    # logging.basicConfig(level=logging.DEBUG, filename='xlsUploaderLog.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
-    # logging.basicConfig(filename='xlsUploaderLog.log', filemode='a', format='%(asctime)s - %(process)d - %(name)s - %(levelname)s - %(message)s')
-    logging.basicConfig(filename='xlsUploaderLog.log', filemode='w', format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S')
+    logging.basicConfig(filename='xlsUploaderLog.log', filemode='a')
+    logging.basicConfig(level=logging.DEBUG, filename='xlsUploaderLog.log', filemode='a', format='%(name)s - %(levelname)s - %(message)s')
+    logging.basicConfig(filename='xlsUploaderLog.log', filemode='a', format='%(asctime)s - %(process)d - %(name)s - %(levelname)s - %(message)s')
+    logging.basicConfig(filename='xlsUploaderLog.log', filemode='a', format='%(asctime)s - %(message)s', datefmt='%d-%b-%y %H:%M:%S')
 
     logging.info('Admin logged in')
     logging.basicConfig(level=logging.DEBUG)
