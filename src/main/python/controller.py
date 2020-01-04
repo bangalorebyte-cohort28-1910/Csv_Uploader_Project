@@ -1,10 +1,13 @@
-import sys, os, settings, logging
+from fbs_runtime.application_context.PyQt5 import ApplicationContext
+from PyQt5.QtWidgets import QMainWindow
+
+import sys, os, logging
 sys.path.insert(1, os.path.dirname(__file__))
 from model import Model
 from view import ViewLogin, ViewFileBrowseWindow, ViewUpdateDBWindow
 from PyQt5 import QtWidgets, QtGui, QtCore
 import pandas as pd
-
+import settings
 
 logger = logging.getLogger('controller')
 
