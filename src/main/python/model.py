@@ -2,7 +2,7 @@
 from sqlalchemy import create_engine, Table, Column, String, MetaData, inspect
 import pandas as pd
 import logging, settings
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker 
 
 # Setting logger to use current filename
 logger = logging.getLogger(__name__)
